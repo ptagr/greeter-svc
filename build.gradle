@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'com.google.cloud.tools.jib' version '1.8.0'
+}
+
+group 'com.myelection'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+        resources {
+            srcDirs "src/main/resources"
+        }
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-core
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version: '2.0.0'
+
+//    compile 'com.google.cloud:libraries-bom:3.3.0'
+//    compile 'com.google.cloud:google-cloud-vision'
+//    compile 'com.google.cloud:google-cloud-storage'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jib {
+    from {
+        image = "adoptopenjdk/openjdk11:debian-slim"
+    }
+    to {
+        image = "gcr.io/myelection-262922/pdf-parser-svc"
+    }
+    container {
+        args = ['server', '/app/resources/config.yml']
+    }
+}
