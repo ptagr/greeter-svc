@@ -1,5 +1,3 @@
 package config;
 
-public class AppConfig extends io.dropwizard.Configuration {
-
-}
+public class AppConfig extends io.dropwizard.Configuration {}

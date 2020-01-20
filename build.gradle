@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'application'
     id 'com.google.cloud.tools.jib' version '1.8.0'
 }
 
-group 'com.myelection'
+group 'com.example'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -24,24 +25,23 @@ sourceSets {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/io.dropwizard/dropwizard-core
     compile group: 'io.dropwizard', name: 'dropwizard-core', version: '2.0.0'
-
-//    compile 'com.google.cloud:libraries-bom:3.3.0'
-//    compile 'com.google.cloud:google-cloud-vision'
-//    compile 'com.google.cloud:google-cloud-storage'
-
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
 jib {
-    from {
-        image = "adoptopenjdk/openjdk11:debian-slim"
-    }
     to {
-        image = "gcr.io/myelection-262922/pdf-parser-svc"
+        image = "localhost:5000/greeter-svc"
     }
     container {
         args = ['server', '/app/resources/config.yml']
+        mainClass = 'Application'
+        allowInsecureRegistries = true
     }
+}
+
+
+mainClassName = "Application"
+run {
+    args 'server', 'src/main/resources/config.yml'
 }
